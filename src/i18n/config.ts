@@ -16,7 +16,7 @@ export const ui = {
   pt: {
     'site.title': '~/the sisyphus',
     'site.description':
-      'Notas sobre engenharia de software, arquitetura e as ferramentas do dia a dia.',
+      'not all who wander, are lost...',
     'nav.home': 'Início',
     'nav.blog': 'Posts',
     'nav.about': 'Sobre',
@@ -42,7 +42,7 @@ export const ui = {
   en: {
     'site.title': '~/the sisyphus',
     'site.description':
-      'Notes on software engineering, architecture, and everyday tooling.',
+      'not all who wander, are lost...',
     'nav.home': 'Home',
     'nav.blog': 'Posts',
     'nav.about': 'About',
