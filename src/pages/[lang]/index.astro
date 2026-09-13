@@ -1,0 +1,70 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { languages, useTranslations, type Lang } from '../../i18n/config';
+import { href } from '../../lib/url';
+import { getPosts } from '../../lib/posts';
+
+export const getStaticPaths: GetStaticPaths = () =>
+  Object.keys(languages).map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const posts = (await getPosts(lang)).slice(0, 5);
+---
+
+<BaseLayout lang={lang} altPath="">
+  <section class="hero">
+    <h1>{t('home.hero.title')}</h1>
+    <p class="muted">{t('home.hero.subtitle')}</p>
+  </section>
+
+  <section>
+    <h2 class="section-title">{t('home.latest')}</h2>
+    {
+      posts.length === 0 ? (
+        <p class="muted">{t('blog.empty')}</p>
+      ) : (
+        posts.map((post) => <PostCard post={post} lang={lang} />)
+      )
+    }
+    {
+      posts.length > 0 && (
+        <p class="all">
+          <a href={href(`/${lang}/blog`)}>{t('home.all')} →</a>
+        </p>
+      )
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .hero h1 {
+    font-size: 2.2rem;
+    white-space: pre-line;
+    margin-bottom: 0.75rem;
+  }
+  .hero p {
+    font-size: 1.05rem;
+    max-width: 34rem;
+  }
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-top: 3.5rem;
+    margin-bottom: 0;
+  }
+  .all {
+    margin-top: 1.75rem;
+    font-size: 0.95rem;
+  }
+  @media (max-width: 640px) {
+    .hero h1 {
+      font-size: 1.8rem;
+    }
+  }
+</style>

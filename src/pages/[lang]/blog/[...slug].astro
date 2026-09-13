@@ -1,0 +1,32 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render } from 'astro:content';
+import PostLayout from '../../../layouts/PostLayout.astro';
+import { splitId, type Post } from '../../../lib/posts';
+import { isLang, type Lang } from '../../../i18n/config';
+
+interface Props {
+  post: Post;
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getCollection('blog', ({ data }) => !(data.draft && import.meta.env.PROD));
+
+  return posts
+    .map((post) => {
+      const { lang, slug } = splitId(post.id);
+      if (!isLang(lang)) return null;
+      return { params: { lang, slug }, props: { post } };
+    })
+    .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+};
+
+const { post } = Astro.props;
+const lang = Astro.params.lang as Lang;
+const { Content } = await render(post);
+const altPath = `/blog/${splitId(post.id).slug}`;
+---
+
+<PostLayout post={post} lang={lang} altPath={altPath}>
+  <Content />
+</PostLayout>

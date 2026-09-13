@@ -1,0 +1,19 @@
+---
+import { localeMap, type Lang } from '../i18n/config';
+
+interface Props {
+  date: Date;
+  lang: Lang;
+}
+
+const { date, lang } = Astro.props;
+
+const formatted = new Intl.DateTimeFormat(localeMap[lang], {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+}).format(date);
+---
+
+<time datetime={date.toISOString()}>{formatted}</time>

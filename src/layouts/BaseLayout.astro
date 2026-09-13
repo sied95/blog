@@ -1,0 +1,68 @@
+---
+import { useTranslations, localeMap, type Lang } from '../i18n/config';
+import { href } from '../lib/url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+// Fontes auto-hospedadas (sem requisição a terceiros)
+import '@fontsource-variable/inter';
+import '@fontsource-variable/roboto-mono';
+import '../styles/global.css';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  /** Caminho equivalente no outro idioma (sem prefixo de idioma). */
+  altPath?: string;
+  /** article para posts, website para o resto */
+  ogType?: 'website' | 'article';
+}
+
+const { lang, title, description, altPath = '', ogType = 'website' } = Astro.props;
+const t = useTranslations(lang);
+
+const pageTitle = title ? `${title} · ${t('site.title')}` : t('site.title');
+const pageDescription = description ?? t('site.description');
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang={localeMap[lang]} data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
+    <link rel="alternate" hreflang="pt-BR" href={new URL(href(`/pt${altPath}`), Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(href(`/en${altPath}`), Astro.site)} />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={localeMap[lang].replace('-', '_')} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="generator" content={Astro.generator} />
+
+    <script is:inline>
+      // Aplica o tema antes da primeira pintura para evitar "flash" de cor.
+      // Escuro é o padrão; só vai para o claro se o sistema pedir explicitamente.
+      (() => {
+        const saved = localStorage.getItem('theme');
+        const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        document.documentElement.dataset.theme = saved ?? (prefersLight ? 'light' : 'dark');
+      })();
+    </script>
+  </head>
+
+  <body>
+    <Header lang={lang} altPath={altPath} />
+    <main class="wrapper">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>

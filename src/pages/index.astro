@@ -1,0 +1,28 @@
+---
+// Raiz do site: manda o visitante para o idioma padrão.
+import { defaultLang } from '../i18n/config';
+import { href } from '../lib/url';
+
+const target = href(`/${defaultLang}`);
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={target} />
+    <meta name="robots" content="noindex" />
+    <title>Redirecionando…</title>
+    <script is:inline define:vars={{ target }}>
+      // Respeita o idioma do navegador quando possível.
+      const preferred = navigator.language?.toLowerCase().startsWith('en')
+        ? target.replace(/\/pt$/, '/en')
+        : target;
+      window.location.replace(preferred);
+    </script>
+  </head>
+  <body>
+    <p>Redirecionando para <a href={target}>{target}</a>…</p>
+  </body>
+</html>

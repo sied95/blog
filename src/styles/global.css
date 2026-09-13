@@ -1,0 +1,365 @@
+/* Paleta e tipografia inspiradas no site da Oxide Computer:
+   near-black frio, verde como único acento, mono para metadados. */
+
+:root {
+  color-scheme: light dark;
+
+  /* claro — contraparte da paleta escura, com verde escurecido para passar AA */
+  --bg: #fcfcfd;
+  --bg-subtle: #f3f4f4;
+  --border: #e0e2e2;
+  --text: #0b1214;
+  --text-muted: #5c6467;
+  --accent: #0f7d5c;
+  --accent-soft: #e3f5ed;
+  --code-bg: #f3f4f4;
+
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Roboto Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --max-width: 44rem;
+  --radius: 4px;
+}
+
+:root[data-theme='dark'] {
+  --bg: #080f11;
+  --bg-subtle: #101618;
+  --border: #1d2427;
+  --text: #e7e7e8;
+  --text-muted: #7e8385;
+  --accent: #48d597;
+  --accent-soft: #10241d;
+  --code-bg: #0d1416;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16.5px;
+  line-height: 1.7;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+main {
+  min-height: 60vh;
+  padding-block: 3rem 4rem;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  font-weight: 500;
+  margin-block: 2rem 0.75rem;
+}
+h1 {
+  font-size: 2.1rem;
+  margin-top: 0;
+}
+h2 {
+  font-size: 1.45rem;
+}
+h3 {
+  font-size: 1.15rem;
+}
+
+p,
+ul,
+ol {
+  margin-block: 0 1.1rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin-block: 2.5rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+blockquote {
+  margin: 1.5rem 0;
+  padding: 0.25rem 0 0.25rem 1.1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text-muted);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.12em 0.38em;
+}
+
+pre {
+  background: var(--code-bg) !important;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* Dois blocos de código lado a lado.
+   Uso no Markdown: <div class="side-by-side"> + linha em branco,
+   os dois blocos, linha em branco e </div>. A linha em branco é o que
+   faz o Markdown voltar a interpretar o conteúdo em vez de tratar
+   tudo como HTML cru. */
+.side-by-side {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin-block: 1.75rem;
+}
+
+.side-by-side pre {
+  margin: 0;
+  height: 100%;
+  font-size: 0.74rem;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* Em telas largas o par estoura a coluna de texto, senão fica ilegível */
+@media (min-width: 62rem) {
+  .side-by-side {
+    width: calc(100% + 11rem);
+    margin-inline: -5.5rem;
+  }
+}
+
+@media (max-width: 46rem) {
+  .side-by-side {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Diagramas ASCII (cerca ```ascii).
+   A entrelinha apertada é o que faz os traços verticais se conectarem;
+   com line-height de texto normal o desenho aparece "picotado". */
+pre[data-language='ascii'] {
+  line-height: 1.15;
+  letter-spacing: 0;
+  font-size: 0.82rem;
+  padding: 1.25rem 1.1rem;
+  background: var(--bg-subtle) !important;
+  /* nunca quebrar linha: o alinhamento é o desenho */
+  white-space: pre;
+  overflow-x: auto;
+}
+
+pre[data-language='ascii'] code {
+  white-space: pre;
+}
+
+@media (max-width: 640px) {
+  pre[data-language='ascii'] {
+    font-size: 0.7rem;
+  }
+}
+
+/* Shiki: alterna tema claro/escuro.
+   Restrito a `screen` de propósito — na impressão queremos que as cores
+   inline do tema claro voltem a valer, e um !important aqui as bloquearia. */
+@media screen {
+  :root[data-theme='dark'] .astro-code,
+  :root[data-theme='dark'] .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: transparent !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  margin-block: 1.5rem;
+}
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+th {
+  background: var(--bg-subtle);
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 16px;
+  }
+  h1 {
+    font-size: 1.7rem;
+  }
+}
+
+/* ─────────────────────────── Impressão / PDF ───────────────────────────
+   O tema escuro é o padrão na tela, então aqui forçamos a paleta clara.
+   As cores do Shiki voltam sozinhas: o override escuro está em @media screen. */
+
+@page {
+  margin: 18mm 16mm;
+}
+
+@media print {
+  :root,
+  :root[data-theme='dark'] {
+    color-scheme: light;
+    --bg: #ffffff;
+    --bg-subtle: #f6f6f6;
+    --border: #cfcfcf;
+    --text: #111111;
+    --text-muted: #4a4a4a;
+    --accent: #0a5c44;
+    --accent-soft: #eef6f2;
+    --code-bg: #f7f7f7;
+  }
+
+  body {
+    background: #fff;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+
+  /* Cromo de navegação não vai para o papel */
+  header,
+  footer,
+  .print-hide {
+    display: none !important;
+  }
+
+  main {
+    padding-block: 0 !important;
+    min-height: 0;
+  }
+
+  .wrapper {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  h1 {
+    font-size: 19pt;
+  }
+  h2 {
+    font-size: 13pt;
+  }
+  h3 {
+    font-size: 11.5pt;
+  }
+
+  /* Não deixar título órfão no fim da página */
+  h1,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  pre,
+  blockquote,
+  table,
+  img,
+  li {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  pre {
+    background: #f7f7f7 !important;
+    border: 1px solid #ddd;
+    font-size: 8pt;
+    line-height: 1.45;
+  }
+
+  /* Diagramas não podem quebrar linha: encolhemos para caber na margem */
+  pre[data-language='ascii'] {
+    font-size: 7pt;
+    line-height: 1.1;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  /* No papel o link não clica — mostramos o destino */
+  .prose a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.8em;
+    color: #555;
+    word-break: break-all;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+}
+
+.print-only {
+  display: none;
+}

@@ -1,0 +1,97 @@
+---
+import { useTranslations, languages, type Lang } from '../i18n/config';
+import { href } from '../lib/url';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  lang: Lang;
+  /** Caminho equivalente no outro idioma, sem o prefixo de idioma. Ex.: "/blog" */
+  altPath?: string;
+}
+
+const { lang, altPath = '' } = Astro.props;
+const t = useTranslations(lang);
+const other = (Object.keys(languages) as Lang[]).find((l) => l !== lang)!;
+
+// O título já carrega o prompt (`~/`). Separamos só para colorir o prefixo.
+const title = t('site.title');
+const prompt = title.startsWith('~/') ? '~/' : '';
+const name = title.slice(prompt.length);
+---
+
+<header>
+  <div class="wrapper bar">
+    <a class="brand" href={href(`/${lang}`)}>
+      <span class="prompt">{prompt}</span>{name}
+    </a>
+
+    <nav>
+      <a href={href(`/${lang}/blog`)}>{t('nav.blog')}</a>
+      <a href={href(`/${lang}/about`)}>{t('nav.about')}</a>
+      <a class="lang" href={href(`/${other}${altPath}`)} title={t('lang.switch')}>
+        {other.toUpperCase()}
+      </a>
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>
+
+<style>
+  header {
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    z-index: 10;
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 60px;
+    flex-wrap: wrap;
+  }
+  .brand {
+    font-weight: 650;
+    color: var(--text);
+    font-size: 0.98rem;
+    letter-spacing: -0.01em;
+  }
+  .brand:hover {
+    text-decoration: none;
+    color: var(--accent);
+  }
+  .prompt {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    margin-right: 0.15rem;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    font-size: 0.92rem;
+  }
+  nav a {
+    color: var(--text-muted);
+  }
+  nav a:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .lang {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.2rem 0.45rem;
+  }
+  @media (max-width: 520px) {
+    nav {
+      gap: 0.8rem;
+    }
+  }
+</style>

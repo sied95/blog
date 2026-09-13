@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { defaultLang, useTranslations } from '../i18n/config';
+import { href } from '../lib/url';
+
+const lang = defaultLang;
+const t = useTranslations(lang);
+---
+
+<BaseLayout lang={lang} title="404">
+  <h1>404 — {t('notfound.title')}</h1>
+  <p class="muted">{t('notfound.text')}</p>
+  <p><a href={href(`/${lang}`)}>← {t('nav.home')}</a></p>
+</BaseLayout>

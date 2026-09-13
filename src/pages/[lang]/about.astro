@@ -1,0 +1,94 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { languages, useTranslations, type Lang } from '../../i18n/config';
+import { AUTHOR, SOCIAL } from '../../consts';
+
+export const getStaticPaths: GetStaticPaths = () =>
+  Object.keys(languages).map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+---
+
+<BaseLayout lang={lang} title={t('about.title')} altPath="/about">
+  <h1>{t('about.title')}</h1>
+
+  {
+    lang === 'pt' ? (
+      <div>
+        <p>
+          Oi, eu sou o Sied95. Sou só mais uma voz na internet, sem nenhuma pretensão
+          além de dar um pouco de ar aos meus pensamentos — como uma forma de organizá-los
+          e de acompanhar como eles mudam com o tempo. Talvez você se identifique com
+          algum, ou seja ajudado por outro; 100% que você vai discordar da maioria, mas
+          isso faz parte do caminho — só não espere razão, conexão ou sentido. Trabalho
+          como Engenheiro/Tech Lead, então boa parte vai ser sobre minhas andanças nessa
+          área, mas também quero escrever sobre outras coisas que fazem parte da minha
+          vida: fotografia, música, natureza e psicologia. Sou brasileiro, mas divido meu
+          tempo entre o Brasil e o Canadá.
+        </p>
+        <blockquote>
+          <p>
+            “Você nunca será feliz se continuar a procurar em que consiste a felicidade.
+            Você nunca viverá se estiver à procura do sentido da vida.”
+          </p>
+          <cite>― Albert Camus</cite>
+        </blockquote>
+        <p>
+          Escrevo em português e inglês. Use o botão <strong>EN</strong> no topo para
+          trocar de idioma.
+        </p>
+        <p>
+          Quer trocar uma ideia? Me chame no{' '}
+          <a href={SOCIAL.github}>GitHub</a> ou por{' '}
+          <a href={`mailto:${SOCIAL.email}`}>email</a>.
+        </p>
+      </div>
+    ) : (
+      <div>
+        <p>
+          Hi, I'm Sied95. I am just another voice in the web, without any pretension
+          other than giving some breath to my thoughts — as a way to help me organize
+          them and keep track of my changes over time. Maybe you can relate to some, or
+          be helped by others; 100% you disagree with most, but that's part of the
+          journey — just don't expect any reason, connection or meaning. I work as an
+          Engineer/Tech Lead, so a lot is going to be about my quests in this field, but
+          I also want to write about other things that are part of my life: photography,
+          music, wilderness and psychology. I am Brazilian, though I split my time
+          between Brazil and Canada.
+        </p>
+        <blockquote>
+          <p>
+            “You will never be happy if you continue to search for what happiness
+            consists of. You will never live if you are looking for the meaning of life.”
+          </p>
+          <cite>― Albert Camus</cite>
+        </blockquote>
+        <p>
+          I write in both Portuguese and English. Use the <strong>PT</strong> button at
+          the top to switch languages.
+        </p>
+        <p>
+          Want to talk? Find me on <a href={SOCIAL.github}>GitHub</a> or drop me an{' '}
+          <a href={`mailto:${SOCIAL.email}`}>email</a>.
+        </p>
+      </div>
+    )
+  }
+</BaseLayout>
+
+<style>
+  blockquote p {
+    margin: 0;
+    font-style: italic;
+  }
+  cite {
+    display: block;
+    margin-top: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-style: normal;
+    letter-spacing: 0.02em;
+  }
+</style>
