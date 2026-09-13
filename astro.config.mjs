@@ -19,8 +19,8 @@ import { asciiDiagram } from './src/lib/ascii-lang.mjs';
 //   SITE = 'https://seudominio.com'
 //   BASE = '/'
 // ─────────────────────────────────────────────────────────────
-const SITE = 'https://sied95.github.io';
-const BASE = '/blog';
+const SITE = 'https://thesisyphus.dev';
+const BASE = '/';
 
 export default defineConfig({
   site: SITE,
