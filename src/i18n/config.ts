@@ -20,9 +20,7 @@ export const ui = {
     'nav.home': 'Início',
     'nav.blog': 'Posts',
     'nav.about': 'Sobre',
-    'home.hero.title': 'Escrevendo sobre código,\nsistemas e o que aprendo no caminho.',
-    'home.hero.subtitle':
-      'Engenharia de software, arquitetura, ferramentas e experimentos. Sem hype, com exemplos.',
+    'home.hero.title': 'not all who wander are lost',
     'home.latest': 'Últimos posts',
     'home.all': 'Ver todos os posts',
     'blog.title': 'Todos os posts',
@@ -48,9 +46,7 @@ export const ui = {
     'nav.home': 'Home',
     'nav.blog': 'Posts',
     'nav.about': 'About',
-    'home.hero.title': 'Writing about code,\nsystems, and what I learn along the way.',
-    'home.hero.subtitle':
-      'Software engineering, architecture, tooling, and experiments. No hype, just examples.',
+    'home.hero.title': 'not all who wander are lost',
     'home.latest': 'Latest posts',
     'home.all': 'See all posts',
     'blog.title': 'All posts',
